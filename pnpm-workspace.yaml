@@ -1,0 +1,4 @@
+onlyBuiltDependencies:
+  - '@mui/x-telemetry'
+  - '@parcel/watcher'
+  - less
