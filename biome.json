@@ -15,7 +15,20 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"style": {
+				"useSelfClosingElements": "warn"
+			},
+			"correctness": {
+				"noUnusedVariables": {
+					"level": "warn",
+					"fix": "none"
+				},
+				"noUnusedFunctionParameters": {
+					"level": "warn",
+					"fix": "none"
+				}
+			}
 		}
 	},
 	"javascript": {
