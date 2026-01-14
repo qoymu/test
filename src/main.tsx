@@ -1,11 +1,20 @@
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { router } from './app/router/router.tsx';
 
-import App from './App.tsx';
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(
-	<StrictMode>
-		<App />
-	</StrictMode>,
-);
+const root = document.getElementById('root');
+
+if (root) {
+	createRoot(root).render(
+		<StrictMode>
+			<LocalizationProvider dateAdapter={AdapterDateFns}>
+				<RouterProvider router={router} />
+			</LocalizationProvider>
+		</StrictMode>,
+	);
+}

@@ -1,0 +1,17 @@
+.settings {
+	margin-top: 8px;
+
+	display: flex;
+	flex-direction: column;
+	row-gap: 8px;
+
+	.fields {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+
+		& > div {
+			flex-basis: 250px;
+		}
+	}
+}

@@ -18,6 +18,7 @@ import {
 } from '@mui/x-data-grid-premium';
 import { ruRU } from '@mui/x-data-grid-premium/locales';
 import { useEffect, useMemo, useRef } from 'react';
+
 import styles from './styles.module.scss';
 
 const pivotingColDef: DataGridPremiumProps['pivotingColDef'] = (
@@ -35,7 +36,7 @@ const aggregationFunctions = {
 	size: {},
 };
 
-function App() {
+export const Table = () => {
 	const apiRef = useGridApiRef();
 
 	const { columns, fetchRows } = useMockServer(
@@ -160,6 +161,4 @@ function App() {
 			</GridChartsIntegrationContextProvider>
 		</ChartsLocalizationProvider>
 	);
-}
-
-export default App;
+};
