@@ -17,6 +17,9 @@
 		"@mui/x-charts-premium": "^8.22.1",
 		"@mui/x-data-grid-generator": "^8.22.1",
 		"@mui/x-data-grid-premium": "^8.22.1",
+		"@mui/x-date-pickers": "^8.24.0",
+		"@tanstack/react-router": "^1.149.3",
+		"date-fns": "^4.1.0",
 		"react": "^19.2.0",
 		"react-dom": "^19.2.0"
 	},
