@@ -1,8 +1,15 @@
 .container {
+	height: 100vh;
+
 	padding: 8px;
+	box-sizing: border-box;
+
+	display: flex;
+	flex-direction: column;
 }
 
 .navigation {
 	display: flex;
 	column-gap: 8px;
+	margin-bottom: 8px;
 }

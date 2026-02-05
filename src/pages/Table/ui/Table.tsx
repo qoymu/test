@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import { ChartsLocalizationProvider } from '@mui/x-charts-premium';
 import {
 	ChartsRenderer,
@@ -17,8 +18,7 @@ import {
 	useGridApiRef,
 } from '@mui/x-data-grid-premium';
 import { ruRU } from '@mui/x-data-grid-premium/locales';
-import { useEffect, useMemo, useRef } from 'react';
-
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 
 const pivotingColDef: DataGridPremiumProps['pivotingColDef'] = (
@@ -38,6 +38,7 @@ const aggregationFunctions = {
 
 export const Table = () => {
 	const apiRef = useGridApiRef();
+	const [savedState, setSavedState] = useState<any>(null);
 
 	const { columns, fetchRows } = useMockServer(
 		{ rowLength: 1000, dataSet: 'Commodity', maxColumns: 20 },
@@ -52,8 +53,13 @@ export const Table = () => {
 				console.log('rows params: ', params);
 
 				const urlParams = new URLSearchParams({
+					// https://mui.com/x/react-data-grid/pagination/#server-side-pagination
 					paginationModel: JSON.stringify(params.paginationModel),
+
+					// https://mui.com/x/react-data-grid/filtering/server-side/
 					filterModel: JSON.stringify(params.filterModel),
+
+					// https://mui.com/x/react-data-grid/sorting/#server-side-sorting
 					sortModel: JSON.stringify(params.sortModel),
 
 					// Группировка
@@ -70,6 +76,7 @@ export const Table = () => {
 					pivotModel: JSON.stringify(params.pivotModel),
 				});
 
+				// https://github.com/mui/mui-x/blob/master/packages/x-data-grid-generator/src/hooks/useMockServer.ts#L132
 				const rowsResponse = await fetchRows(
 					`https://mui.com/x/api/data-grid?${urlParams.toString()}`,
 				);
@@ -129,36 +136,84 @@ export const Table = () => {
 		return apiRef.current?.subscribeEvent('columnsChange', handleColumnsChange);
 	}, [apiRef]);
 
+	const handleSaveState = () => {
+		if (apiRef.current) {
+			const fullState = apiRef.current.exportState();
+			const chartsConfig = fullState.chartsIntegration;
+
+			setSavedState(chartsConfig);
+			console.log('savedState: ', chartsConfig);
+		}
+	};
+
+	const handleRestoreState = () => {
+		if (apiRef.current && savedState) {
+			apiRef.current.restoreState({
+				chartsIntegration: savedState,
+			});
+		}
+	};
+
 	return (
-		<ChartsLocalizationProvider>
-			<GridChartsIntegrationContextProvider>
-				<div className={styles.container}>
-					<GridChartsRendererProxy id="main" renderer={ChartsRenderer} />
-					<DataGridPremium
-						columns={columns}
-						dataSource={dataSource}
-						pagination
-						pivotingColDef={pivotingColDef}
-						pageSizeOptions={[10, 20, 50]}
-						showToolbar
-						aggregationFunctions={aggregationFunctions}
-						localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-						// Графики
-						experimentalFeatures={{
-							charts: true,
-						}}
-						chartsIntegration
-						slots={{
-							chartsPanel: GridChartsPanel,
-						}}
-						slotProps={{
-							chartsPanel: {
-								schema: configurationOptions,
-							},
-						}}
-					/>
-				</div>
-			</GridChartsIntegrationContextProvider>
-		</ChartsLocalizationProvider>
+		<>
+			<div>
+				<Button onClick={handleSaveState}>Сохрнаить состояние</Button>
+				<Button onClick={handleRestoreState}>Установить состояние</Button>
+			</div>
+
+			<ChartsLocalizationProvider>
+				<GridChartsIntegrationContextProvider>
+					<div className={styles.container}>
+						<GridChartsRendererProxy id="main" renderer={ChartsRenderer} />
+						<DataGridPremium
+							apiRef={apiRef}
+							columns={columns}
+							dataSource={dataSource}
+							pagination
+							pivotingColDef={pivotingColDef}
+							showToolbar
+							aggregationFunctions={aggregationFunctions}
+							localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
+							// Графики
+							experimentalFeatures={{
+								charts: true,
+							}}
+							chartsIntegration
+							slots={{
+								chartsPanel: GridChartsPanel,
+							}}
+							slotProps={{
+								chartsPanel: {
+									schema: configurationOptions,
+								},
+							}}
+							initialState={{
+								chartsIntegration: {
+									activeChartId: 'main',
+									charts: {
+										main: {
+											chartType: 'column',
+											dimensions: [
+												{
+													field: 'id',
+												},
+											],
+											values: [
+												{
+													field: 'feeRate',
+												},
+											],
+											configuration: {
+												colors: 'redPalette',
+											},
+										},
+									},
+								},
+							}}
+						/>
+					</div>
+				</GridChartsIntegrationContextProvider>
+			</ChartsLocalizationProvider>
+		</>
 	);
 };

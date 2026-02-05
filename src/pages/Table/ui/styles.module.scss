@@ -1,11 +1,5 @@
 .container {
-	display: flex;
-	flex-direction: column;
-
-	height: 100vh;
-
-	padding: 8px;
-	box-sizing: border-box;
+	overflow: scroll;
 
 	div[style*="pointer-events: none"][style*="text-align: center"] {
   	display: none;
