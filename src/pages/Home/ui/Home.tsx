@@ -1,8 +1,10 @@
-import { Settings } from "./Settings";
+import { Settings } from './Settings';
+
+import styles from './styles.module.scss';
 
 export const Home = () => {
 	return (
-		<div>
+		<div className={styles.home}>
 			<Settings />
 		</div>
 	);

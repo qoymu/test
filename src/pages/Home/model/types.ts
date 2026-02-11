@@ -1,4 +1,5 @@
 import type { SETTINGS_OPTIONS } from '../config/constants';
+import type { IField } from './api';
 
 export type TOption = (typeof SETTINGS_OPTIONS)[number];
 
@@ -10,7 +11,7 @@ export interface IAnimalsSettings extends IBaseSettings {
 	type: 'animals';
 	date?: string;
 	alive?: boolean;
-	fields?: string[];
+	fields?: IField[];
 }
 
 export interface IEventsSettings extends IBaseSettings {
@@ -18,7 +19,7 @@ export interface IEventsSettings extends IBaseSettings {
 	events?: string[];
 	dateFor?: string;
 	dateTo?: string;
-	fields?: string[];
+	fields?: IField[];
 }
 
 export type TSettings = IAnimalsSettings | IEventsSettings | null;
