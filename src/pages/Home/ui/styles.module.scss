@@ -3,16 +3,19 @@
 	flex-direction: column;
 	flex-grow: 1;
 	overflow: hidden;
+	row-gap: 8px;
 }
 
 .settings {
-	padding-top: 8px;
-	overflow: hidden;
-
 	display: flex;
 	flex-direction: column;
 	row-gap: 8px;
-	flex-grow: 1;
+
+	padding: 4px;
+	padding-top: 9px;
+	background-color: #ebebeba9;
+	border-radius: 4px;
+	border: 1px solid #91919191;
 
 	.fields {
 		display: flex;
@@ -20,9 +23,17 @@
 		gap: 8px;
 
 		& > div {
-			flex-basis: 250px;
+			min-width: 250px;
+			flex-basis: 1;
 		}
 	}
+}
+
+.filters {
+	padding: 4px;
+	background-color: #ebebeba9;
+	border-radius: 4px;
+	border: 1px solid #91919191;
 }
 
 .table {

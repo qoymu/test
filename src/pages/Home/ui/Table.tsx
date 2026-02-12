@@ -7,23 +7,37 @@ import {
 	fieldsApi,
 	type IAnimalsApiQueryParams,
 } from '../model/api';
+import type { TSettings } from '../model/types';
 import styles from './styles.module.scss';
 
 interface Props {
-	settings: IAnimalsApiQueryParams | null;
+	settings: TSettings | null;
 }
 
 export const Table = ({ settings }: Props) => {
 	const { data: fields, isPending: fieldsPending } = useQuery(
 		fieldsApi.getFields(),
 	);
+
+	let animalsQueryParams: IAnimalsApiQueryParams | null = null;
+	if (settings?.type === 'animals') {
+		animalsQueryParams = {
+			fields: settings.fields?.map((field) => field.identifier),
+			for_date: settings.date,
+		};
+	}
+
 	const { data: animals, isPending: animalsPending } = useQuery(
-		animalsApi.getAnimals(settings),
+		animalsApi.getAnimals(animalsQueryParams),
 	);
+
+	const selectedFields = useMemo(() => {
+		return settings?.fields?.map((field) => field.identifier);
+	}, [settings?.fields]);
 
 	const columns = useMemo(() => {
 		return fields
-			?.filter((field) => settings?.fields?.includes(field.identifier))
+			?.filter((field) => selectedFields?.includes(field.identifier))
 			?.map(
 				(field) =>
 					({
@@ -32,7 +46,7 @@ export const Table = ({ settings }: Props) => {
 						type: 'string',
 					}) as GridColDef,
 			);
-	}, [fields, settings?.fields]);
+	}, [fields, selectedFields]);
 
 	return (
 		<div className={styles.table}>
