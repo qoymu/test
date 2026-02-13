@@ -45,6 +45,7 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 						for_date: settings?.for_date,
 
 						pagination: params.paginationModel,
+
 						...(params.filterModel.items.length > 0 && {
 							filters: params.filterModel,
 						}),
@@ -74,6 +75,8 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 					rowCount: result.rowCount,
 				};
 			},
+
+			getGroupKey: (row) => row.groupKey,
 		};
 	}, [settings]);
 

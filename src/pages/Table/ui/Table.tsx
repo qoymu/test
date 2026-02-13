@@ -54,13 +54,13 @@ export const Table = () => {
 
 				const urlParams = new URLSearchParams({
 					// https://mui.com/x/react-data-grid/pagination/#server-side-pagination
-					pagination: JSON.stringify(params.paginationModel),
+					paginationModel: JSON.stringify(params.paginationModel),
 
 					// https://mui.com/x/react-data-grid/filtering/server-side/
-					filters: JSON.stringify(params.filterModel),
+					filterModel: JSON.stringify(params.filterModel),
 
 					// https://mui.com/x/react-data-grid/sorting/#server-side-sorting
-					ordering: JSON.stringify(params.sortModel),
+					sortModel: JSON.stringify(params.sortModel),
 
 					// Группировка
 					// https://mui.com/x/react-data-grid/server-side-data/row-grouping/
@@ -69,11 +69,11 @@ export const Table = () => {
 
 					// Агрегация
 					// https://mui.com/x/react-data-grid/server-side-data/aggregation/
-					aggregation: JSON.stringify(params.aggregationModel),
+					aggregationModel: JSON.stringify(params.aggregationModel),
 
 					// Режим сводной таблицы
 					// https://mui.com/x/react-data-grid/server-side-data/pivoting/
-					pivot: JSON.stringify(params.pivotModel),
+					pivotModel: JSON.stringify(params.pivotModel),
 				});
 
 				// https://github.com/mui/mui-x/blob/master/packages/x-data-grid-generator/src/hooks/useMockServer.ts#L132
@@ -187,29 +187,29 @@ export const Table = () => {
 									schema: configurationOptions,
 								},
 							}}
-							initialState={{
-								chartsIntegration: {
-									activeChartId: 'main',
-									charts: {
-										main: {
-											chartType: 'column',
-											dimensions: [
-												{
-													field: 'id',
-												},
-											],
-											values: [
-												{
-													field: 'feeRate',
-												},
-											],
-											configuration: {
-												colors: 'redPalette',
-											},
-										},
-									},
-								},
-							}}
+							// initialState={{
+							// 	chartsIntegration: {
+							// 		activeChartId: 'main',
+							// 		charts: {
+							// 			main: {
+							// 				chartType: 'column',
+							// 				dimensions: [
+							// 					{
+							// 						field: 'id',
+							// 					},
+							// 				],
+							// 				values: [
+							// 					{
+							// 						field: 'feeRate',
+							// 					},
+							// 				],
+							// 				configuration: {
+							// 					colors: 'redPalette',
+							// 				},
+							// 			},
+							// 		},
+							// 	},
+							// }}
 						/>
 					</div>
 				</GridChartsIntegrationContextProvider>
