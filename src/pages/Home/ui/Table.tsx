@@ -1,5 +1,6 @@
 import {
 	DataGridPremium,
+	type DataGridPremiumProps,
 	type GridColDef,
 	type GridDataSource,
 } from '@mui/x-data-grid-premium';
@@ -18,6 +19,17 @@ interface Props {
 	settings: IAnimalsApiQueryParams | null;
 	fields: IField[];
 }
+
+const aggregationFunctions: DataGridPremiumProps['aggregationFunctions'] = {
+	MaxAggregator: { label: 'Наибольшее' },
+	MinAggregator: { label: 'Наименьшее' },
+	AvgAggregator: { label: 'Среднее' },
+	SumAggregator: { label: 'Сумма' },
+	CountAggregator: { label: 'Количество' },
+	DistinctCountAggregator: { label: 'Количество уникальных' },
+
+	// sum: { columnTypes: ['number'] },
+};
 
 export const Table = ({ isLoading, settings, fields }: Props) => {
 	// data
@@ -80,6 +92,9 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 
 			getGroupKey: (row) => row.groupKey,
 			getChildrenCount: (row) => (row.groupKey ? -1 : 0),
+			getAggregatedValue: (row, field) => {
+				return row[field];
+			},
 		};
 	}, [settings]);
 
@@ -92,6 +107,7 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 				showToolbar
 				localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
 				loading={isLoading}
+				aggregationFunctions={aggregationFunctions}
 			/>
 		</div>
 	);
