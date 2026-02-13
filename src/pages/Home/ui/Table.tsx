@@ -38,6 +38,10 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 				if (!settings?.fields || !settings.forDate)
 					return { rows: [], rowCount: 0 };
 
+				const aggregation = Object.entries(params.aggregationModel || {}).map(
+					([field, aggregation]) => ({ field, aggregation }),
+				);
+
 				const result = await queryClient.fetchQuery(
 					animalsApi.getAnimals({
 						fields: settings?.fields,
@@ -46,25 +50,23 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 
 						pagination: params.paginationModel,
 
-						...(params.filterModel.items.length > 0 && {
+						...(Boolean(params.filterModel.items.length) && {
 							filters: params.filterModel,
 						}),
 
-						...(params.sortModel.length > 0 && {
+						...(Boolean(params.sortModel.length) && {
 							ordering: params.sortModel,
 						}),
 
-						...(params.aggregationModel && {
-							aggregation: Object.entries(params.aggregationModel || {}).map(
-								([field, aggregation]) => ({ field, aggregation }),
-							),
+						...(Boolean(aggregation.length) && {
+							aggregation,
 						}),
 
-						...(params.groupFields && {
+						...(Boolean(params.groupFields?.length) && {
 							groupFields: params.groupFields,
 						}),
 
-						...(params.groupKeys && {
+						...(Boolean(params.groupKeys?.length) && {
 							groupKeys: params.groupKeys,
 						}),
 					}),
