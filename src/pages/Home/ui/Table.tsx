@@ -79,7 +79,7 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 			},
 
 			getGroupKey: (row) => row.groupKey,
-			getChildrenCount: () => -1,
+			getChildrenCount: (row) => (row.groupKey ? -1 : 0),
 		};
 	}, [settings]);
 

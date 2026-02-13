@@ -50,8 +50,6 @@ export const Table = () => {
 			// Основное
 			// https://mui.com/x/react-data-grid/server-side-data/
 			getRows: async (params) => {
-				console.log('rows params: ', params);
-
 				const urlParams = new URLSearchParams({
 					// https://mui.com/x/react-data-grid/pagination/#server-side-pagination
 					paginationModel: JSON.stringify(params.paginationModel),
