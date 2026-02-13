@@ -19,7 +19,11 @@ const queryParamsBuilder = (params: TQueryParams) => {
 		if (value !== undefined && value !== null) {
 			if (Array.isArray(value)) {
 				value.forEach((item) => {
-					searchParams.append(key, String(item));
+					if (typeof item === 'object') {
+						searchParams.append(key, JSON.stringify(value));
+					} else {
+						searchParams.append(key, String(item));
+					}
 				});
 			} else if (typeof value === 'object') {
 				searchParams.append(key, JSON.stringify(value));

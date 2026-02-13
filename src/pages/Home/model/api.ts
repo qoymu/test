@@ -27,7 +27,7 @@ interface IAggregation {
 }
 
 export interface IAnimalsApiQueryParams {
-	for_date?: string;
+	forDate?: string;
 	fields?: string[];
 	// filters?: string;
 	ordering?: GridSortModel;

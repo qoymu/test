@@ -35,14 +35,14 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 	const dataSource: GridDataSource = useMemo(() => {
 		return {
 			getRows: async (params) => {
-				if (!settings?.fields || !settings.for_date)
+				if (!settings?.fields || !settings.forDate)
 					return { rows: [], rowCount: 0 };
 
 				const result = await queryClient.fetchQuery(
 					animalsApi.getAnimals({
 						fields: settings?.fields,
 
-						for_date: settings?.for_date,
+						forDate: settings?.forDate,
 
 						pagination: params.paginationModel,
 

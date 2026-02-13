@@ -21,7 +21,7 @@ export const Home = () => {
 	if (savedSettings?.type === 'animals') {
 		animalsQueryParams = {
 			fields: savedSettings.fields?.map((field) => field.identifier),
-			for_date: savedSettings.date,
+			forDate: savedSettings.date,
 			// ...(savedFilters && { filters: savedFilters }),
 		};
 	}
