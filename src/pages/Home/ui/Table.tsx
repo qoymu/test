@@ -1,63 +1,91 @@
-import { DataGridPremium, type GridColDef } from '@mui/x-data-grid-premium';
+import {
+	DataGridPremium,
+	type GridColDef,
+	type GridDataSource,
+} from '@mui/x-data-grid-premium';
 import { ruRU } from '@mui/x-data-grid-premium/locales';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { queryClient } from '../../../shared/api/queryClient';
 import {
 	animalsApi,
-	fieldsApi,
 	type IAnimalsApiQueryParams,
+	type IField,
 } from '../model/api';
-import type { TSettings } from '../model/types';
 import styles from './styles.module.scss';
 
 interface Props {
-	settings: TSettings | null;
+	isLoading: boolean;
+	settings: IAnimalsApiQueryParams | null;
+	fields: IField[];
 }
 
-export const Table = ({ settings }: Props) => {
-	const { data: fields, isPending: fieldsPending } = useQuery(
-		fieldsApi.getFields(),
-	);
-
-	let animalsQueryParams: IAnimalsApiQueryParams | null = null;
-	if (settings?.type === 'animals') {
-		animalsQueryParams = {
-			fields: settings.fields?.map((field) => field.identifier),
-			for_date: settings.date,
-		};
-	}
-
-	const { data: animals, isPending: animalsPending } = useQuery(
-		animalsApi.getAnimals(animalsQueryParams),
-	);
-
-	const selectedFields = useMemo(() => {
-		return settings?.fields?.map((field) => field.identifier);
-	}, [settings?.fields]);
-
+export const Table = ({ isLoading, settings, fields }: Props) => {
+	// data
 	const columns = useMemo(() => {
-		return fields
-			?.filter((field) => selectedFields?.includes(field.identifier))
-			?.map(
-				(field) =>
-					({
-						field: field.identifier,
-						headerName: field.label,
-						type: 'string',
-					}) as GridColDef,
-			);
-	}, [fields, selectedFields]);
+		return fields.map(
+			(field) =>
+				({
+					field: field.identifier,
+					headerName: field.label,
+					type: 'string',
+				}) as GridColDef,
+		);
+	}, [fields]);
+
+	const dataSource: GridDataSource = useMemo(() => {
+		return {
+			getRows: async (params) => {
+				if (!settings?.fields || !settings.for_date)
+					return { rows: [], rowCount: 0 };
+
+				const result = await queryClient.fetchQuery(
+					animalsApi.getAnimals({
+						fields: settings?.fields,
+
+						for_date: settings?.for_date,
+
+						pagination: params.paginationModel,
+						...(params.filterModel.items.length > 0 && {
+							filters: params.filterModel,
+						}),
+
+						...(params.sortModel.length > 0 && {
+							ordering: params.sortModel,
+						}),
+
+						...(params.aggregationModel && {
+							aggregation: Object.entries(params.aggregationModel || {}).map(
+								([field, aggregation]) => ({ field, aggregation }),
+							),
+						}),
+
+						...(params.groupFields && {
+							pivot: params.groupFields,
+						}),
+
+						...(params.groupKeys && {
+							pivot: params.groupKeys,
+						}),
+					}),
+				);
+
+				return {
+					rows: result.data,
+					rowCount: result.rowCount,
+				};
+			},
+		};
+	}, [settings]);
 
 	return (
 		<div className={styles.table}>
 			<DataGridPremium
-				columns={columns || []}
-				rows={animals || []}
-				// dataSource={dataSource}
+				columns={columns}
+				dataSource={dataSource}
 				pagination
 				showToolbar
 				localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-				loading={fieldsPending || animalsPending}
+				loading={isLoading}
 			/>
 		</div>
 	);

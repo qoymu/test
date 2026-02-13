@@ -54,13 +54,13 @@ export const Table = () => {
 
 				const urlParams = new URLSearchParams({
 					// https://mui.com/x/react-data-grid/pagination/#server-side-pagination
-					paginationModel: JSON.stringify(params.paginationModel),
+					pagination: JSON.stringify(params.paginationModel),
 
 					// https://mui.com/x/react-data-grid/filtering/server-side/
-					filterModel: JSON.stringify(params.filterModel),
+					filters: JSON.stringify(params.filterModel),
 
 					// https://mui.com/x/react-data-grid/sorting/#server-side-sorting
-					sortModel: JSON.stringify(params.sortModel),
+					ordering: JSON.stringify(params.sortModel),
 
 					// Группировка
 					// https://mui.com/x/react-data-grid/server-side-data/row-grouping/
@@ -69,11 +69,11 @@ export const Table = () => {
 
 					// Агрегация
 					// https://mui.com/x/react-data-grid/server-side-data/aggregation/
-					aggregationModel: JSON.stringify(params.aggregationModel),
+					aggregation: JSON.stringify(params.aggregationModel),
 
 					// Режим сводной таблицы
 					// https://mui.com/x/react-data-grid/server-side-data/pivoting/
-					pivotModel: JSON.stringify(params.pivotModel),
+					pivot: JSON.stringify(params.pivotModel),
 				});
 
 				// https://github.com/mui/mui-x/blob/master/packages/x-data-grid-generator/src/hooks/useMockServer.ts#L132

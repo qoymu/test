@@ -30,6 +30,10 @@
 }
 
 .filters {
+	display: flex;
+	flex-direction: column;
+	row-gap: 8px;
+
 	padding: 4px;
 	background-color: #ebebeba9;
 	border-radius: 4px;
