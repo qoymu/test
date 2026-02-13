@@ -10,7 +10,7 @@ import { Table } from './Table';
 export const Home = () => {
 	// states
 	const [savedSettings, setSavedSettings] = useState<TSettings | null>(null);
-	const [savedFilters, setSavedFilters] = useState<string | null>(null);
+	const [_savedFilters, setSavedFilters] = useState<string | null>(null);
 
 	// api
 	const { data: allFields, isPending: fieldsPending } = useQuery(
