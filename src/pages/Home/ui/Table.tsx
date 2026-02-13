@@ -61,11 +61,11 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 						}),
 
 						...(params.groupFields && {
-							pivot: params.groupFields,
+							groupFields: params.groupFields,
 						}),
 
 						...(params.groupKeys && {
-							pivot: params.groupKeys,
+							groupKeys: params.groupKeys,
 						}),
 					}),
 				);
@@ -77,6 +77,7 @@ export const Table = ({ isLoading, settings, fields }: Props) => {
 			},
 
 			getGroupKey: (row) => row.groupKey,
+			getChildrenCount: () => -1,
 		};
 	}, [settings]);
 
